@@ -1,22 +1,55 @@
-# CA3 quick start code: Frontend Boilerplate
+# 3 Semester Examination
 
 (Insert travis URL)
 
 <br>
 
-# Introduction
+# Group E8 members:
 
-This is part of a 3'rd semester, computer science course at CPH Business, Lyngby.
+- [Alexander Pihl](https://github.com/AlexanderPihl)
+- [Jean-Poul Leth-Møller](https://github.com/Jean-Poul)
+- Mick Larsen (Me)
+- [Morten Rasmussen]()
+- [Per Kringelbach](https://github.com/cph-pk)
 
 <br>
 
-## **Frontend configuration**
+# Introduction
+
+[Link to Project description](https://drive.google.com/file/d/1KJbXQlUVfwblKARqqhvivvKv12Bh_ECm/view)
+
+This is part of a 3'rd semester examination, at a computer science course at CPH Business, Lyngby.
+
+<br>
+
+# Description
+
+The goal for this project is to build an API which gives the klient information about space shuttle launches, including weather predictions in the given arrea, for "calculating" the possibility of a shuttle launch. If there is time a NASA API for showing pictures of outer  will be implemented.
+
+<br>
+
+### **API endpoints used**
+
+https://thespacedevs.com/llapi 
+- Primary GET: https://ll.thespacedevs.com/2.0.0/launch/upcoming?format=json 
+- Docs: https://ll.thespacedevs.com/2.1.0/swagger 
+
+https://openweathermap.org/ 
+- Docs: https://openweathermap.org/api/one-call-api 
+
+<br>
+
+### **Frontend configuration**
+
+[Delpoyed with surge](http://rocketlaunch.surge.sh/)
 
 The frontend is a single page application (SPA) written in REACT.
 
 <br>
 
-## **Backend configuration**
+### **Backend configuration**
+
+[Delpoyed on droplet](https://micklarsen.com/3_sem_eksamensprojekt/)
 
 **The Database**
 
@@ -42,44 +75,3 @@ Consisting of unit and integration tests using:
 - Travis configuration with github hooks - Everytime you push, travis builds and deploys
 
 <br>
-
-# Getting started
-
-In order to get started with the "Quick start code" you will need a [backend](https://github.com/MivleDK/CA3_Boilerplate_Backend) and [frontend](https://github.com/MivleDK/CA3_Boilerplate_Frontend).
-
-## Getting started with the backend
-
-1. Clone or download this project
-2. Create two local databases for the project. One for mocking production and one for tests.  
-   The testdatabase must end with "\_test" - eg. `localDB` and `localDB_test`.
-3. Configure `persistence.xml` to match your database and credentials
-4. (Optional) Configure `pom.xml` to match your deployment target (Domain name or IP-address)
-5. Make a plain java file in package "utils" named `"SetupTestUsers.java"` and persist some different users.  
-   You can use [this code example](https://gist.github.com/MivleDK/b7452b652a33414573fb3a7d91876340)
-6. **DO NOT USE LEGIT USERS AND PASSWORDS IN THE TEST PACKAGE**
-7. Run a "Clean & build" to make sure that everyting was setup correctly.
-8. Run the project and verify it's accessible in your browser on localhost.
-9. Run the `SetupTestUsers.java` file to persist test users.
-10. Done 🍻🎉🍾  
-    You can deploy on travis from this point or deploy directly using a WAR with tomcat manager .
-
-<br>
-
-## Getting started with the frontend
-
-1. Clone or download [the repo](https://github.com/MivleDK/CA3_Boilerplate_Frontend)
-2. Run `npm install` to get all dependencies
-3. Run `npm start` to run the project locally on localhost
-4. Done 🍻🎉🍾  
-   You can tweak as you like or deploy directly on your domain or using surge.
-5. (Extra) to deploy on surge run `surge --project ./build --domain A_DOMAIN_NAME.surge.sh`
-
-<br>
-
-**Thanks to the original boilerplate contributers**
-
-- [Alexander Pihl](https://github.com/AlexanderPihl)
-- [Jean-Poul Leth-Møller](https://github.com/Jean-Poul)
-- Mick Larsen (Me)
-- [Morten Rasmussen]()
-- [Per Kringelbach](https://github.com/cph-pk)
