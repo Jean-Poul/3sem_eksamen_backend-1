@@ -1,31 +1,26 @@
 package dto;
 
 import entities.NextLaunch;
-
+import java.time.LocalDateTime;
 
 public class NextLaunchDTO {
- 
-    
-    private String url;
-    private String value;
+
+    private String data;
     private NextLaunch nextLaunch;
+    private long id;
+    private LocalDateTime time;
 
+    public NextLaunchDTO() {
+    }
 
-    public NextLaunchDTO(){
+    public NextLaunchDTO(NextLaunch nextLaunch) {
+        this.data = nextLaunch.getData();
+    }
+
+    public String getData() {
+        return data;
     }
     
-    public NextLaunchDTO(NextLaunch nextLaunch){
-        this.value = nextLaunch.getData();
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public NextLaunch getNextLaunch(){
         return nextLaunch;
     }
@@ -33,6 +28,5 @@ public class NextLaunchDTO {
     public void setNextLaunch(NextLaunch nextLaunch){
         this.nextLaunch = nextLaunch;
     }
+
 }
-    
-    
