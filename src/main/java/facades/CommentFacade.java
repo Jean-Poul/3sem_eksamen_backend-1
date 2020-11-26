@@ -2,6 +2,7 @@
 package facades;
 
 import dto.CommentDTO;
+import dto.CommentsDTO;
 import entities.Comment;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,6 +43,15 @@ public class CommentFacade {
             em.close();
         }
     }
+    
+        public CommentsDTO getAllComments() {
+        EntityManager em = getEntityManager();
+        try {
+            return new CommentsDTO(em.createNamedQuery("Comment.getAllRows").getResultList());
+        } finally {
+            em.close();
+        }
+    }   
     
     public CommentDTO getUserComment(long id) throws Exception {
         

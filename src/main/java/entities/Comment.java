@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,7 +18,10 @@ import javax.persistence.Temporal;
 
 @Entity
 @Table(name = "comments")
-@NamedQuery(name = "Comment.deleteAllRows", query = "DELETE from Comment")
+@NamedQueries({
+    @NamedQuery(name = "Comment.deleteAllRows", query = "DELETE from Comment"),
+    @NamedQuery(name = "Comment.getAllRows", query = "SELECT c from Comment c")})
+
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -12,6 +12,7 @@ import utils.EMF_Creator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CommentDTO;
+import dto.CommentsDTO;
 import facades.CommentFacade;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -44,6 +45,14 @@ public class CommentResource {
         long count = FACADE.getCommentCount();
         return "{\"count\":" + count + "}";
         
+    }
+    
+    @Path("all")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAllComments() {
+        CommentsDTO comment = FACADE.getAllComments();
+        return GSON.toJson(comment);
     }
 
     @GET
