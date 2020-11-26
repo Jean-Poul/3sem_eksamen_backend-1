@@ -2,10 +2,10 @@ package facades;
 
 import dto.NextLaunchDTO;
 import entities.NextLaunch;
-import java.util.List;
+import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
+import jokefetcher.NextLaunchFetcher;
 
 public class NextLaunchFacade {
 
@@ -38,15 +38,13 @@ public class NextLaunchFacade {
         }
     }
 
-    public NextLaunchDTO getNextLaunch() {
+    public NextLaunchDTO getNextLaunch() throws IOException {
         EntityManager em = emf.createEntityManager();
         try {
-            List jsonString = em.createQuery("SELECT d.data FROM NextLaunch d ORDER BY d.fetchTime DESC").getResultList();
-            List jsonStringTime = em.createQuery("SELECT d.fetchTime FROM NextLaunch d ORDER BY d.fetchTime DESC").getResultList();
-            System.out.println(jsonStringTime);
-            System.out.println(jsonString.get(0));
-            NextLaunchDTO nextLaunchDTO = new NextLaunchDTO(new NextLaunch(jsonString.get(0).toString()));
-            return nextLaunchDTO;
+            NextLaunchFetcher nextLaunchFetcher = new NextLaunchFetcher();
+            String json = nextLaunchFetcher.getNextLaunchJson();
+            NextLaunchDTO nlDTO = new NextLaunchDTO(new NextLaunch(json));
+            return nlDTO;
         } finally {
             em.close();
         }

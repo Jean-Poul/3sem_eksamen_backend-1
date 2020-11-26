@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.NextLaunchDTO;
 import facades.NextLaunchFacade;
+import java.io.IOException;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -35,9 +36,9 @@ public class NextLaunchResource {
     @Path("/upcoming")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getNextLaunches() {
+    public String getNextLaunches() throws IOException {
         NextLaunchDTO Nl = FACADE.getNextLaunch();
-        return GSON.toJson(Nl);        
+        return GSON.toJson(Nl.getData());        
     }
         
     
