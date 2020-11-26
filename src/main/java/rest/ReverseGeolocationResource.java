@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import utils.HttpUtils;
 
-@Path("geoloc/{lat}/{lon}")
+@Path("geoloc")
 public class ReverseGeolocationResource {
 
     @Context
@@ -20,10 +20,18 @@ public class ReverseGeolocationResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String Geolocation(@PathParam("lat") String lat, @PathParam("lon") String lon) throws IOException {
+    public String getInfoGeo() {
+        return "{\"msg\":\"Hello to geolocation\"}";
+    }
+    
+    @Path("/{lat}/{lon}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getGeolocation(@PathParam("lat") String lat, @PathParam("lon") String lon) throws IOException {
+        System.out.println("lat: " + lat + " lon: " + lon);
         Gson gson = new Gson();
         String geoloc = HttpUtils.fetchData("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + lat + "&longitude=" + lon + "&localityLanguage=en");
-        System.out.println("GEO: " + geoloc);
+        
         GeolocationDTO geolocDTO = gson.fromJson(geoloc, GeolocationDTO.class);
         String geolocation = gson.toJson(geolocDTO);
         
