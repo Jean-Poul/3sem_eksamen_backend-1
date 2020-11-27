@@ -2,9 +2,15 @@
 package facades;
 
 import dto.CommentDTO;
+import dto.CommentsDTO;
 import entities.Comment;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import static org.hamcrest.MatcherAssert.assertThat;
+import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,6 +74,18 @@ public class CommentFacadeTest {
         
         assertEquals(2, facade.getCommentCount(), "Expects two rows in the database");     
     
+    }
+    
+    @Test
+    public void testGetAllComments() {
+        
+        CommentsDTO commentsDTO = facade.getAllComments();
+        List<CommentDTO> list = commentsDTO.getAll();
+        System.out.println("Liste af comments: "+list);
+        assertThat(list, everyItem(Matchers.hasProperty("id")));
+        assertThat(list, Matchers.hasItems(Matchers.<CommentDTO>hasProperty("userComment", is("c1 comment")),
+                Matchers.<CommentDTO>hasProperty("userComment", is("c2 comment"))
+                ));
     }
     
     @Test

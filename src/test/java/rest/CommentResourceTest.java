@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -14,7 +15,12 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -76,6 +82,7 @@ public class CommentResourceTest {
             em.persist(c2);
             em.getTransaction().commit();
             
+            
         } finally {
             
             em.close();
@@ -102,6 +109,25 @@ public class CommentResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("count", equalTo(2));
 
+    }
+    
+    @Test
+    public void testGetAllComments() {
+        List<CommentDTO> commentsDTOs;
+
+        commentsDTOs = given()
+                .contentType("application/json")
+                .when()
+                .get("/comments/all")
+                .then()
+                .extract().body().jsonPath().getList("all", CommentDTO.class);
+
+        CommentDTO c1DTO = new CommentDTO(c1);
+        CommentDTO c2DTO = new CommentDTO(c2);
+        
+        assertThat(commentsDTOs, containsInAnyOrder(c1DTO, c2DTO));
+        
+        assertThat(commentsDTOs, hasSize(2));
     }
     
     @Test
