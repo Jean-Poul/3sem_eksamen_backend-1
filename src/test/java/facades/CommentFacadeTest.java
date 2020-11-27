@@ -86,6 +86,7 @@ public class CommentFacadeTest {
         assertThat(list, Matchers.hasItems(Matchers.<CommentDTO>hasProperty("userComment", is("c1 comment")),
                 Matchers.<CommentDTO>hasProperty("userComment", is("c2 comment"))
                 ));
+        
     }
     
     @Test

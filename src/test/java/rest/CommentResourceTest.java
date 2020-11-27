@@ -17,10 +17,8 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -120,6 +118,7 @@ public class CommentResourceTest {
                 .when()
                 .get("/comments/all")
                 .then()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
                 .extract().body().jsonPath().getList("all", CommentDTO.class);
 
         CommentDTO c1DTO = new CommentDTO(c1);
@@ -136,14 +135,14 @@ public class CommentResourceTest {
         int expected = Math.toIntExact(c1.getId());
         
         //If you want to match on string use the code below and set body to "userComment"
-        //String expected = c1.getComment();
-        
+        //String expected = c1.getComment(); 
         
         given()
                 .contentType("application/json")
                 .when()
                 .get("/comments/" + c1.getId())
                 .then()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
                 .assertThat()
                 .body("id", equalTo(expected));
     }
@@ -157,6 +156,7 @@ public class CommentResourceTest {
                 .when()
                 .post("comments")
                 .then()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("userComment", equalTo("c1 comment"))
                 .body("id", notNullValue());
         
