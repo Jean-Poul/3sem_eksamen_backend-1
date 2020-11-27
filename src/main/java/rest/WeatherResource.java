@@ -22,8 +22,6 @@ public class WeatherResource {
         return "{\"msg\":\"Hello to weather\"}";
     }
     
-    // https://api.openweathermap.org/data/2.5/onecall?lat=34.644&lon=-120.593&units=metric&exclude=minutely,hourly,alerts&appid=5a5aa77c1ab574a00a9c0b16e5ad50fa
-    
     @Path("/{lat}/{lon}/{key}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
