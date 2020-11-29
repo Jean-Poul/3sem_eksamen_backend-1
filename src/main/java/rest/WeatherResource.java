@@ -18,7 +18,7 @@ public class WeatherResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getInfoGeo() {
+    public String getInfoWeather() {
         return "{\"msg\":\"Hello to weather\"}";
     }
     
