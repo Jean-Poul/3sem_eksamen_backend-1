@@ -12,7 +12,7 @@ import utils.HttpUtils;
 
 public class NextLaunchFetcher {
 
-    int timeIntervalMinutes = 1; //Max time between new fetches
+    int timeIntervalMinutes = 61; //Max time between new fetches
     List jsonString;
     String newJson;
 

@@ -9,12 +9,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import utils.EMF_Creator;
 
 @Path("nextlaunch")
 public class NextLaunchResource {
 
+    @Context
+    private UriInfo context;    
+    
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final NextLaunchFacade FACADE = NextLaunchFacade.getNextLaunchFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -36,9 +42,9 @@ public class NextLaunchResource {
     @Path("/upcoming")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getNextLaunches() throws IOException {
+    public Response getNextLaunches() throws IOException {
         NextLaunchDTO Nl = FACADE.getNextLaunch();
-        return GSON.toJson(Nl.getData());        
+        return Response.ok(Nl.getData()).build();
     }
         
     
