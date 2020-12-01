@@ -28,7 +28,7 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "user_comment", columnDefinition = "TEXT")
+    @Column(name = "user_comment", columnDefinition = "VARCHAR(250)")
     private String comment;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date created;
