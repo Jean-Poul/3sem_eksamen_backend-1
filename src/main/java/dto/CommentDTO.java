@@ -2,12 +2,16 @@
 package dto;
 
 import entities.Comment;
+import entities.User;
+import java.util.Date;
 import java.util.Objects;
 
 
 public class CommentDTO {
     private String userComment;
     private Comment comment;
+    private Date created;
+    private User userName;
     private long id;
 
     public CommentDTO() {
@@ -16,6 +20,9 @@ public class CommentDTO {
     public CommentDTO(Comment comment) {
         this.userComment = comment.getComment();
         this.id = comment.getId();
+        this.created = comment.getCreated();
+        this.userName = comment.getUser();
+        System.out.println("USERNAME: " + userName);
     }
 
     public String getUserComment() {
@@ -37,6 +44,24 @@ public class CommentDTO {
     public long getId() {
         return id;
     }   
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public User getUserName() {
+        return userName;
+    }
+
+    public void setUserName(User userName) {
+        this.userName = userName;
+    }
+
+
 
     @Override
     public int hashCode() {
