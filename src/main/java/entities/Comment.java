@@ -1,4 +1,3 @@
-
 package entities;
 
 import java.io.Serializable;
@@ -38,11 +37,12 @@ public class Comment implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
     
+    
     public Comment(String comment) {
         this.comment = comment;
         this.created = new Date();
         this.lastEdited = new Date();
-        //System.out.println(userName);
+        
     }
     
     public Comment() {
