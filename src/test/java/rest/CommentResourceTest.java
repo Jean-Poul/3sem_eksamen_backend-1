@@ -68,8 +68,8 @@ public class CommentResourceTest {
     public void setUp() {
         EntityManager em = emf.createEntityManager();
         
-        c1 = new Comment("c1 comment");
-        c2 = new Comment("c2 comment");
+        c1 = new Comment("c1 comment", "333");
+        c2 = new Comment("c2 comment", "323");
         
         try {
             

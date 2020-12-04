@@ -37,11 +37,13 @@ public class Comment implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
     
+    private String rocketID;
     
-    public Comment(String comment) {
+    public Comment(String comment, String rocketID) {
         this.comment = comment;
         this.created = new Date();
         this.lastEdited = new Date();
+        this.rocketID = rocketID;
         
     }
     
@@ -87,5 +89,15 @@ public class Comment implements Serializable {
     public void setLastEdited(Date lastEdited) {
         this.lastEdited = lastEdited;
     }
+
+    public String getRocketID() {
+        return rocketID;
+    }
+
+    public void setRocketID(String rocketID) {
+        this.rocketID = rocketID;
+    }
+    
+    
     
 }

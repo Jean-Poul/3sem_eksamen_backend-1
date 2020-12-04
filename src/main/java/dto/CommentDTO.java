@@ -10,6 +10,7 @@ public class CommentDTO {
     private Comment comment;
     private Date created;
     private long id;
+    private String rocketID;
 
     public CommentDTO() {
     }
@@ -18,6 +19,7 @@ public class CommentDTO {
         this.userComment = comment.getComment();
         this.id = comment.getId();
         this.created = comment.getCreated();        
+        this.rocketID = comment.getRocketID();
     }
 
     public String getUserComment() {
@@ -47,6 +49,16 @@ public class CommentDTO {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+    public String getRocketID() {
+        return rocketID;
+    }
+
+    public void setRocketID(String rocketID) {
+        this.rocketID = rocketID;
+    }
+    
+    
 
     @Override
     public int hashCode() {
