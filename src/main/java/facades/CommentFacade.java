@@ -87,10 +87,10 @@ public class CommentFacade {
         }
     }
     
-    public CommentDTO addComment(String addComment) throws Exception {
+    public CommentDTO addComment(String addComment, String rocketID) throws Exception {
         
         EntityManager em = emf.createEntityManager();
-        Comment comment = new Comment(addComment);
+        Comment comment = new Comment(addComment, rocketID);
         
         if ((addComment.length() == 0 )) {
             throw new Exception("Missing input");

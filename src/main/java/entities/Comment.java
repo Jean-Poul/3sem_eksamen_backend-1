@@ -1,4 +1,3 @@
-
 package entities;
 
 import java.io.Serializable;
@@ -37,11 +36,15 @@ public class Comment implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
-
-    public Comment(String comment) {
+    
+    private String rocketID;
+    
+    public Comment(String comment, String rocketID) {
         this.comment = comment;
         this.created = new Date();
         this.lastEdited = new Date();
+        this.rocketID = rocketID;
+        
     }
     
     public Comment() {
@@ -86,5 +89,15 @@ public class Comment implements Serializable {
     public void setLastEdited(Date lastEdited) {
         this.lastEdited = lastEdited;
     }
+
+    public String getRocketID() {
+        return rocketID;
+    }
+
+    public void setRocketID(String rocketID) {
+        this.rocketID = rocketID;
+    }
+    
+    
     
 }
