@@ -7,12 +7,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,8 +41,11 @@ public class User implements Serializable {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
-    
-    @OneToMany(cascade = CascadeType.PERSIST)
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Comment comment;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
     public List<String> getRolesAsStrings() {
@@ -103,8 +108,13 @@ public class User implements Serializable {
         this.commentList = commentList;
     }
 
-     public void addComment(Comment userComment) {
-        commentList.add(userComment);
-    }   
-
+//    public void setComment(Comment comment){
+//    this.comment = comment;
+//    }
+    public void addComment(Comment userComment) {
+        if (userComment != null) {
+            commentList.add(userComment);
+            userComment.setUser(this);
+        }
+    }
 }
