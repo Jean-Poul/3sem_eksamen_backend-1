@@ -37,7 +37,7 @@ public class Comment implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastEdited; 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     
     private String rocketID;
@@ -101,5 +101,5 @@ public class Comment implements Serializable {
     }
     
     
-    
+       
 }

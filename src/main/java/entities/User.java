@@ -39,13 +39,15 @@ public class User implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
+    
+        
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Comment comment;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
     public List<String> getRolesAsStrings() {
@@ -68,7 +70,7 @@ public class User implements Serializable {
 
     public User(String userName, String userPass) {
         this.userName = userName;
-
+        
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
     }
 
@@ -108,13 +110,18 @@ public class User implements Serializable {
         this.commentList = commentList;
     }
 
-//    public void setComment(Comment comment){
-//    this.comment = comment;
-//    }
     public void addComment(Comment userComment) {
         if (userComment != null) {
             commentList.add(userComment);
             userComment.setUser(this);
         }
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 }

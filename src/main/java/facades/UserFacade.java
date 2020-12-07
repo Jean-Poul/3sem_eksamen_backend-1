@@ -1,5 +1,7 @@
 package facades;
 
+import dto.UserDTO;
+import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -49,6 +51,25 @@ public class UserFacade {
             em.close();
         }
         return user;
+    }
+    
+    public UserDTO addUser(String userName, String password) throws Exception {
+        EntityManager em = emf.createEntityManager();
+        User user = new User(userName, password);
+        Role userRole = new Role("user");
+        user.addRole(userRole);
+        
+        if ((userName.length() == 0 || password.length() == 0 )) {
+            throw new Exception("Missing input");
+        }
+        try {
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new UserDTO(user);
     }
 
 }
