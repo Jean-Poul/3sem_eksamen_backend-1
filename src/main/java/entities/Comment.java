@@ -37,7 +37,7 @@ public class Comment implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastEdited; 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
     
     private String rocketID;
@@ -99,7 +99,12 @@ public class Comment implements Serializable {
     public void setRocketID(String rocketID) {
         this.rocketID = rocketID;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Comment{" + "id=" + id + ", comment=" + comment + ", created=" + created + ", lastEdited=" + lastEdited + ", user=" + user + ", rocketID=" + rocketID + '}';
+    }
+
+   
        
 }

@@ -44,10 +44,10 @@ public class User implements Serializable {
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private Comment comment;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
+//    private Comment comment;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
 
     public List<String> getRolesAsStrings() {
@@ -72,7 +72,14 @@ public class User implements Serializable {
         this.userName = userName;
         
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
+    }  
+
+    public User(String userName) {
+        this.userName = userName;
     }
+    
+    
+    
 
     public String getUserName() {
         return userName;
@@ -117,11 +124,11 @@ public class User implements Serializable {
         }
     }
 
-    public Comment getComment() {
-        return comment;
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
+//    public Comment getComment() {
+//        return comment;
+//    }
+//
+//    public void setComment(Comment comment) {
+//        this.comment = comment;
+//    }
 }
