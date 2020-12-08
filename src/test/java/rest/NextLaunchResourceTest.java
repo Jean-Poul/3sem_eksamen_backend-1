@@ -7,17 +7,17 @@ import io.restassured.parsing.Parser;
 import java.net.URI;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.Matchers.equalTo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Disabled;
 import utils.EMF_Creator;
 
 public class NextLaunchResourceTest {
@@ -52,7 +52,7 @@ public class NextLaunchResourceTest {
         EMF_Creator.endREST_TestWithDB();
         httpServer.shutdownNow();
     }
-    
+
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -67,21 +67,29 @@ public class NextLaunchResourceTest {
         } finally {
             em.close();
         }
-    }    
-
-    @Test
-    public void serverIsRunning() {
-        given().when().get("/info").then().statusCode(200);
     }
 
     @Test
-    public void testStringInDatabase() {
+    public void serverIsRunning() {
+        given().when().get("/nextlaunch").then().statusCode(200);
+    }
+
+    @Test
+    public void getNextLaunches() {
         EntityManager em = emf.createEntityManager();
         int expResult = 22654;
         String jsonString = (String) em.createQuery("SELECT d.data FROM NextLaunch d ORDER BY d.fetchTime DESC").getResultList().get(0);
         int result = jsonString.length();
         assertEquals(expResult, result);
     }
-
-
+    
+    @Test
+    public void getLaunchStringsCount() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/nextlaunch/count").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("count", equalTo(1));
+    }
 }

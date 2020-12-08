@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-//@Disabled
+@Disabled
 public class CommentResourceTest {
     
     private static final int SERVER_PORT = 7777;

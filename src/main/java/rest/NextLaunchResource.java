@@ -34,7 +34,7 @@ public class NextLaunchResource {
     @Path("count")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonCount() {
+    public String getLaunchStringsCount() {
         long count = FACADE.getLaunchCount();
         return "{\"count\":" + count + "}";
     }
@@ -46,6 +46,4 @@ public class NextLaunchResource {
         NextLaunchDTO Nl = FACADE.getNextLaunch();
         return Response.ok(Nl.getData()).build();
     }
-        
-    
 }
