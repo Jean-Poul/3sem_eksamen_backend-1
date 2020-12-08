@@ -3,6 +3,7 @@ package facades;
 import dto.CommentDTO;
 import dto.CommentsDTO;
 import entities.Comment;
+import errorhandling.NoConnectionException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -69,7 +70,7 @@ public class CommentFacadeTest {
     }
     
     @Test
-    public void testCommentCount() {
+    public void testCommentCount() throws NoConnectionException{
         
         assertEquals(2, facade.getCommentCount(), "Expects two rows in the database");     
     

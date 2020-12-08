@@ -4,6 +4,8 @@ package facades;
 import dto.CommentDTO;
 import dto.CommentsDTO;
 import entities.Comment;
+import errorhandling.CommentException;
+import errorhandling.NoConnectionException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -32,7 +34,7 @@ public class CommentFacade {
         return emf.createEntityManager();
     }
     
-    public long getCommentCount() throws Exception { 
+    public long getCommentCount() throws NoConnectionException { 
         
         EntityManager em = emf.createEntityManager();
         
@@ -40,7 +42,7 @@ public class CommentFacade {
             long commentCount = (long)em.createQuery("SELECT COUNT(c) FROM Comment c").getSingleResult();
             return commentCount;
         }catch (Exception e){
-            throw new Exception ("No connection to the database");
+            throw new NoConnectionException ("No connection to the database");
         }
         finally{  
             em.close();
@@ -56,14 +58,14 @@ public class CommentFacade {
         }
     }   
     
-    public CommentDTO getUserComment(long id) throws Exception {
+    public CommentDTO getUserComment(long id) throws CommentException {
         
         EntityManager em = getEntityManager();
         
         Comment comment = em.find(Comment.class, id);
         
         if (comment == null) {
-            throw new Exception("No user comment linked with provided id was found");
+            throw new CommentException("No user comment linked with provided id was found");
         } else {
             try {
                 return new CommentDTO(comment);
@@ -73,11 +75,11 @@ public class CommentFacade {
         }
     }
     
-    public CommentDTO deleteComment(long id) throws Exception {
+    public CommentDTO deleteComment(long id) throws CommentException {
         EntityManager em = getEntityManager();
         Comment comment = em.find(Comment.class, id);
         if (comment == null) {
-            throw new Exception("Could not delete, Id was not found");
+            throw new CommentException("Could not delete, Id was not found");
         } else {
             try {
                 em.getTransaction().begin();
@@ -90,13 +92,13 @@ public class CommentFacade {
         }
     }
     
-    public CommentDTO addComment(String addComment, String rocketID) throws Exception {
+    public CommentDTO addComment(String addComment, String rocketID) throws CommentException {
         
         EntityManager em = emf.createEntityManager();
         Comment comment = new Comment(addComment, rocketID);
         
         if ((addComment.length() == 0 )) {
-            throw new Exception("Missing input");
+            throw new CommentException("Missing input");
         }
         
         try {
