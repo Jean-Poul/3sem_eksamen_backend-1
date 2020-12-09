@@ -77,7 +77,7 @@ public class CommentFacadeTest {
     }
     
     @Test
-    public void testGetAllComments() {
+    public void testGetAllComments() throws NoConnectionException{
         
         CommentsDTO commentsDTO = facade.getAllComments();
         List<CommentDTO> list = commentsDTO.getAll();

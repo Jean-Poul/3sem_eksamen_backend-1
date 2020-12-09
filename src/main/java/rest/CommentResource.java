@@ -52,7 +52,7 @@ public class CommentResource {
     @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllComments() {
+    public String getAllComments() throws NoConnectionException {
         CommentsDTO comment = FACADE.getAllComments();
         return GSON.toJson(comment);
     }

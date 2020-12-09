@@ -49,10 +49,12 @@ public class CommentFacade {
         }
     }
     
-        public CommentsDTO getAllComments() {
+        public CommentsDTO getAllComments() throws NoConnectionException  {
         EntityManager em = getEntityManager();
         try {
             return new CommentsDTO(em.createNamedQuery("Comment.getAllRows").getResultList());
+        }catch (Exception e){
+            throw new NoConnectionException ("No connection to the database");
         } finally {
             em.close();
         }
