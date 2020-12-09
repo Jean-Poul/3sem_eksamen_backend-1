@@ -11,7 +11,6 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -69,6 +68,7 @@ public class NextLaunchFacadeTest {
         }
     }
 
+
     @Test
     public void testGetLaunchCount() {
         long result = facade.getLaunchCount();
@@ -76,16 +76,9 @@ public class NextLaunchFacadeTest {
         assertEquals(expResult, result);
     }
 
-    @Disabled
     @Test
     public void testGetNextLaunch() throws Exception {
-
-        boolean expResult = false;
-        NextLaunchDTO result = facade.getNextLaunch();
-      //  assertEquals(expResult, result);
-        assertTrue((result.getNextLaunch().toString().length() > 1));
-        // TODO review the generated test code and remove the default call to fail.
-
+        String result = facade.getNextLaunch().getData();
+        assertTrue((result.length() > 10));
     }
-
 }
