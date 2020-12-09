@@ -1,8 +1,11 @@
 package facades;
 
+import dto.UserDTO;
 import entities.Role;
 import utils.EMF_Creator;
 import entities.User;
+import static facades.CommentFacade.getCommentFacade;
+import static facades.UserFacade.getUserFacade;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,14 +23,14 @@ import org.junit.jupiter.api.Test;
 import security.errorhandling.AuthenticationException;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class UserFacadeTest {
 
     private static EntityManagerFactory emf;
     //private static FacadeExample facade;
     private static UserFacade facade;
-    private User u1, u2;
-    private Role r1, r2;
+    private User u1, u2, us;
+    private Role r1, r2, usR;
 
     public UserFacadeTest() {
     }
@@ -77,14 +80,13 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void testAFacadeMethod() {
+    public void testUserCount() {
         assertEquals(2, facade.getUserCount(), "Expects two rows in the database");
     }
 
     @Test
     public void testGetVeryfiedUser() throws AuthenticationException {
         String pass = u1.getUserPass();
-
         assertEquals(u1.getUserName(), "testmand1");
         assertEquals(u1.getUserPass(), pass);
         assertThat(u1.getUserName(), is(not("pollemand")));
@@ -92,7 +94,24 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void testGetRoleList() {
+    public void testUserRole() {
         assertEquals(u1.getRolesAsStrings().get(0), r1.getRoleName());
     }
+
+    @Test
+    public void testAddUser() throws Exception {
+        
+//        us = new UserDTO("testmand1", "storFedAgurk");
+//        usR = new Role("user");
+//                     
+//        EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+//        UserFacade uf = getUserFacade(EMF);
+//        uf.addUser(us);
+//
+//        assertEquals();
+        facade.addUser("Lillemor", "Muffe");
+        
+    }
+    
+    
 }
