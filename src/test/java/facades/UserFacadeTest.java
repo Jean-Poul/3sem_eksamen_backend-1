@@ -4,9 +4,6 @@ import dto.UserDTO;
 import entities.Role;
 import utils.EMF_Creator;
 import entities.User;
-import static facades.CommentFacade.getCommentFacade;
-import static facades.UserFacade.getUserFacade;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,11 +11,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import security.errorhandling.AuthenticationException;
 
@@ -29,8 +24,8 @@ public class UserFacadeTest {
     private static EntityManagerFactory emf;
     //private static FacadeExample facade;
     private static UserFacade facade;
-    private User u1, u2, us;
-    private Role r1, r2, usR;
+    private User u1, u2;
+    private Role r1, r2;
 
     public UserFacadeTest() {
     }
@@ -100,18 +95,20 @@ public class UserFacadeTest {
 
     @Test
     public void testAddUser() throws Exception {
+        EntityManager em = emf.createEntityManager();
+        String userName = "ulla";
+        String pass = "muffe";
         
-//        us = new UserDTO("testmand1", "storFedAgurk");
-//        usR = new Role("user");
-//                     
-//        EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-//        UserFacade uf = getUserFacade(EMF);
-//        uf.addUser(us);
-//
-//        assertEquals();
-        facade.addUser("Lillemor", "Muffe");
+        User ul = new User(userName, pass);
+        UserDTO u = new UserDTO(ul);
+        
+        System.out.println(u);
+        
+        facade.addUser(userName, pass);
+        em.find(User.class, userName);
+        
+        //assertEquals(u, em.find(User.class, userName));
         
     }
-    
     
 }

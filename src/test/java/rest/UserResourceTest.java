@@ -117,24 +117,16 @@ public class UserResourceTest {
 
     }
 
-    @Disabled
+    //@Disabled
     @Test
     public void testGetRole() throws Exception {
-
-        String expected = "{"+ "code" + ":" + "403,\n" + "message:" + "Not authenticated - do login" +"}";
-        
-        System.out.println(u1.getRolesAsStrings());
 
         //If you want to match on string use the code below and set body to "userComment"
         //String expected = c1.getComment(); 
         given()
-                .contentType("application/json")
                 .when()
                 .get("users/" + "user")
-                .then()
-                .statusCode(403)
-                .assertThat()
-                .body(equalTo(expected));
+                .then().statusCode(403);
     }
 
     //@Disabled
