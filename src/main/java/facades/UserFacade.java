@@ -54,9 +54,7 @@ public class UserFacade {
 
     public UserDTO addUser(String userName, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
-        User user;// = new User(userName, password);
-//        Role userRole = new Role("user");
-//        user.addRole(userRole);
+        User user;
 
         try {
             user = em.find(User.class, userName);
@@ -78,26 +76,6 @@ public class UserFacade {
         } finally {
             em.close();
         }
-
-//        try {
-//            user = em.find(User.class, userName);
-//        } catch (Exception e) {
-//            System.out.println("e: "+ e.getMessage());
-//        }
-//        if ((userName.length() == 0 || password.length() == 0)) {
-//            throw new AuthenticationException("Missing input");
-//        }
-//        if (user.getUserName().equalsIgnoreCase(userName)) {
-//            throw new AuthenticationException("User exist");
-//        }
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(user);
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
         return new UserDTO(user);
     }
-
 }
