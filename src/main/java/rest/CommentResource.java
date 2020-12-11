@@ -81,7 +81,7 @@ public class CommentResource {
     public String addComment(String comment) throws Exception {
         
         CommentDTO c = GSON.fromJson(comment, CommentDTO.class);
-        CommentDTO commentAdded = FACADE.addComment(c.getUserComment(), c.getRocketID());
+        CommentDTO commentAdded = FACADE.addComment(c.getUserComment(), c.getRocketID(), c.getUserName());
         return GSON.toJson(commentAdded);
         
     }

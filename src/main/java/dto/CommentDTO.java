@@ -11,6 +11,7 @@ public class CommentDTO {
     private Date created;
     private long id;
     private String rocketID;
+    
     private String userName;
 
     public CommentDTO() {
@@ -59,6 +60,20 @@ public class CommentDTO {
     public void setRocketID(String rocketID) {
         this.rocketID = rocketID;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+    
+    
+    
+
+    
 
     @Override
     public int hashCode() {

@@ -99,7 +99,12 @@ public class Comment implements Serializable {
     public void setRocketID(String rocketID) {
         this.rocketID = rocketID;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Comment{" + "id=" + id + ", comment=" + comment + ", created=" + created + ", lastEdited=" + lastEdited + ", user=" + user + ", rocketID=" + rocketID + '}';
+    }
+
+   
+       
 }
