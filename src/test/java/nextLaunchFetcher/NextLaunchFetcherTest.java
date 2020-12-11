@@ -34,7 +34,7 @@ public class NextLaunchFetcherTest {
         NextLaunch n1 = new NextLaunch(APIData);
         try {
             em.getTransaction().begin();
-            //em.createNamedQuery("NextLaunch.deleteAllRows").executeUpdate();
+            em.createNamedQuery("NextLaunch.deleteAllRows").executeUpdate();
             em.persist(n1);
             em.getTransaction().commit();
         } finally {
