@@ -22,9 +22,6 @@ import javax.ws.rs.POST;
 public class CommentResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    
-    @Context
-    SecurityContext securityContext;
 
     private static final CommentFacade FACADE = CommentFacade.getCommentFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

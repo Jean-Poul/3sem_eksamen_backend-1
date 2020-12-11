@@ -16,10 +16,7 @@ import javax.ws.rs.core.UriInfo;
 import utils.EMF_Creator;
 
 @Path("nextlaunch")
-public class NextLaunchResource {
-
-    @Context
-    private UriInfo context;    
+public class NextLaunchResource {  
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final NextLaunchFacade FACADE = NextLaunchFacade.getNextLaunchFacade(EMF);

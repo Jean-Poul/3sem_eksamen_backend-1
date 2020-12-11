@@ -44,11 +44,9 @@ public class User implements Serializable {
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Role> roleList = new ArrayList<>();
 
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
-//    private Comment comment;
-
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
+    
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
@@ -77,9 +75,6 @@ public class User implements Serializable {
     public User(String userName) {
         this.userName = userName;
     }
-    
-    
-    
 
     public String getUserName() {
         return userName;

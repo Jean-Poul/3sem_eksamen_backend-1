@@ -17,8 +17,6 @@ import javax.persistence.Table;
     @NamedQuery(name = "NextLaunch.deleteAllRows", query = "DELETE FROM NextLaunch")})
 public class NextLaunch implements Serializable {
 
-    //private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Fetch_ID")
@@ -49,6 +47,5 @@ public class NextLaunch implements Serializable {
     public String getData() {
         return data;
     }
-    
-    
+  
 }
