@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import utils.EMF_Creator;
 
+@Disabled
 public class NextLaunchFetcherTest {
     
     public NextLaunchFetcherTest() {
@@ -28,7 +30,6 @@ public class NextLaunchFetcherTest {
     @BeforeAll
     public static void setUpClass() {
         //This method must be called before you request the EntityManagerFactory
-        EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
     }    
     
