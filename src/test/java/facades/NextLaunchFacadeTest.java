@@ -1,6 +1,7 @@
 package facades;
 
 import entities.NextLaunch;
+import errorhandling.NoConnectionException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ public class NextLaunchFacadeTest {
     }
 
     @Test
-    public void testGetLaunchCount() {
+    public void testGetLaunchCount() throws NoConnectionException {
         long result = facade.getLaunchCount();
         long expResult = 1L;
         assertEquals(expResult, result);

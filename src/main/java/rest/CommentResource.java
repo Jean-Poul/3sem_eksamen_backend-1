@@ -15,6 +15,7 @@ import dto.CommentDTO;
 import dto.CommentsDTO;
 import errorhandling.CommentException;
 import errorhandling.NoConnectionException;
+import errorhandling.NotFoundException;
 import facades.CommentFacade;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -80,7 +81,7 @@ public class CommentResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public String addComment(String comment) throws CommentException {
+    public String addComment(String comment) throws CommentException, NotFoundException {
         
         CommentDTO c = GSON.fromJson(comment, CommentDTO.class);
         CommentDTO commentAdded = FACADE.addComment(c.getUserComment(), c.getRocketID(), c.getUserName());
