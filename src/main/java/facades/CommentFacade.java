@@ -4,6 +4,8 @@ import dto.CommentDTO;
 import dto.CommentsDTO;
 import dto.UserDTO;
 import entities.Comment;
+import errorhandling.CommentException;
+import errorhandling.NoConnectionException;
 import entities.User;
 import errorhandling.NotFoundException;
 import javax.persistence.EntityManager;
@@ -34,36 +36,41 @@ public class CommentFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public long getCommentCount() {
-
+    
+    public long getCommentCount() throws NoConnectionException { 
         EntityManager em = emf.createEntityManager();
 
         try {
             long commentCount = (long) em.createQuery("SELECT COUNT(c) FROM Comment c").getSingleResult();
             return commentCount;
-        } finally {
+        }catch (Exception e){
+            throw new NoConnectionException ("No connection to the database");
+        }
+        finally{  
             em.close();
         }
     }
+    
+        public CommentsDTO getAllComments() throws NoConnectionException  {
 
-    public CommentsDTO getAllComments() {
         EntityManager em = getEntityManager();
         try {
             return new CommentsDTO(em.createNamedQuery("Comment.getAllRows").getResultList());
+        }catch (Exception e){
+            throw new NoConnectionException ("No connection to the database");
         } finally {
             em.close();
         }
-    }
-
-    public CommentDTO getUserComment(long id) throws Exception {
-
+    }   
+    
+    public CommentDTO getUserComment(long id) throws CommentException {
+        
         EntityManager em = getEntityManager();
 
         Comment comment = em.find(Comment.class, id);
 
         if (comment == null) {
-            throw new Exception("No user comment linked with provided id was found");
+            throw new CommentException("No user comment linked with provided id was found");
         } else {
             try {
                 return new CommentDTO(comment);
@@ -72,12 +79,12 @@ public class CommentFacade {
             }
         }
     }
+    public CommentDTO deleteComment(long id) throws CommentException {
 
-    public CommentDTO deleteComment(long id) throws Exception {
         EntityManager em = getEntityManager();
         Comment comment = em.find(Comment.class, id);
         if (comment == null) {
-            throw new Exception("Could not delete, Id was not found");
+            throw new CommentException("Could not delete, Id was not found");
         } else {
             try {
                 em.getTransaction().begin();
@@ -89,17 +96,16 @@ public class CommentFacade {
             return new CommentDTO(comment);
         }
     }
-
-    public CommentDTO addComment(String addComment, String rocketID, String userName) throws NotFoundException {
+   
+    public CommentDTO addComment(String addComment, String rocketID) throws CommentException {
 
         EntityManager em = emf.createEntityManager();
 
         Comment comment = new Comment(addComment, rocketID);
+       
+        if ((addComment.length() == 0 )) {
+            throw new CommentException("Missing input");
 
-        User u = em.find(User.class, userName);
-
-        if (u == null) {
-            throw new NotFoundException();
         }
 
         System.out.println("USERNAME: " + u.getUserName());
