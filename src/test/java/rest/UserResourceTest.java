@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
@@ -78,8 +79,6 @@ public class UserResourceTest {
             u1.addRole(r1);
             u2.addRole(r2);
 
-            em.persist(r1);
-            em.persist(r2);
             em.persist(u1);
             em.persist(u2);
 
@@ -123,7 +122,7 @@ public class UserResourceTest {
                 .then().statusCode(403);
     }
 
-    //@Disabled
+    
     @Test
     public void testAddUser() throws Exception {
         given()
@@ -134,7 +133,5 @@ public class UserResourceTest {
                 .then()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("userID", equalTo("Ulla"));
-
     }
-
 }

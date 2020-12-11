@@ -60,7 +60,7 @@ public class UserFacade {
             user = em.find(User.class, userName);
             if (user == null && userName.length() > 0 && password.length() > 0) {
                 user = new User(userName, password);
-                Role userRole = new Role("user");
+                Role userRole = em.find(Role.class, "user");
                 user.addRole(userRole);
                 em.getTransaction().begin();
                 em.persist(user);

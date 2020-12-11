@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import security.errorhandling.AuthenticationException;
 
@@ -58,8 +59,6 @@ public class UserFacadeTest {
             u1.addRole(r1);
             u2.addRole(r2);
 
-            em.persist(r1);
-            em.persist(r2);
             em.persist(u1);
             em.persist(u2);
 
@@ -117,7 +116,5 @@ public class UserFacadeTest {
         } finally {
             em.close();
         }
-
     }
-
 }
