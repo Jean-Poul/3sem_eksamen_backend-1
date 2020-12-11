@@ -95,20 +95,29 @@ public class UserFacadeTest {
 
     @Test
     public void testAddUser() throws Exception {
-        EntityManager em = emf.createEntityManager();
         String userName = "ulla";
         String pass = "muffe";
-        
+
         User ul = new User(userName, pass);
         UserDTO u = new UserDTO(ul);
-        
+
         System.out.println(u);
-        
+
         facade.addUser(userName, pass);
-        em.find(User.class, userName);
-        
+
         //assertEquals(u, em.find(User.class, userName));
         
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            em.find(User.class, userName);
+
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
     }
-    
+
 }
