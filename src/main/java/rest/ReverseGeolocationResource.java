@@ -16,8 +16,6 @@ import javax.ws.rs.core.UriInfo;
 @Path("geoloc")
 public class ReverseGeolocationResource {
 
-    @Context
-    private UriInfo context;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -13,8 +13,6 @@ import utils.HttpUtils;
 @Path("weather")
 public class WeatherResource {
 
-    @Context
-    private UriInfo context;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

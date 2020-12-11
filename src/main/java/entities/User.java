@@ -42,14 +42,12 @@ public class User implements Serializable {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
     
         
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Role> roleList = new ArrayList<>();
-
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
-//    private Comment comment;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
+    
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
@@ -78,9 +76,6 @@ public class User implements Serializable {
     public User(String userName) {
         this.userName = userName;
     }
-    
-    
-    
 
     public String getUserName() {
         return userName;
@@ -169,6 +164,4 @@ public class User implements Serializable {
         }
         return true;
     }
-    
-    
 }

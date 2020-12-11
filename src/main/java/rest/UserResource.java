@@ -25,8 +25,9 @@ import utils.EMF_Creator;
 public class UserResource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+    
     @Context
-    private UriInfo context;
+    private UriInfo context;  
 
     @Context
     SecurityContext securityContext;

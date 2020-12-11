@@ -25,19 +25,13 @@ import javax.ws.rs.POST;
 public class CommentResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    
-    @Context
-    SecurityContext securityContext;
-
     private static final CommentFacade FACADE = CommentFacade.getCommentFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getCommentsForAll() {
-        
         return "{\"msg\":\"Hello from the comment section\"}";
-        
     }
 
     @GET
@@ -62,9 +56,7 @@ public class CommentResource {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getUSerComment(@PathParam("id") long id) throws CommentException {
-        
-        return GSON.toJson(FACADE.getUserComment(id));
-        
+        return GSON.toJson(FACADE.getUserComment(id));    
     }
 
     @DELETE

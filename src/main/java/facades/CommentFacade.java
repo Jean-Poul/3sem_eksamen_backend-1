@@ -118,7 +118,6 @@ public class CommentFacade {
             em.getTransaction().begin();
             em.persist(comment);
             em.getTransaction().commit();
-
         } finally {
             em.close();
         }
