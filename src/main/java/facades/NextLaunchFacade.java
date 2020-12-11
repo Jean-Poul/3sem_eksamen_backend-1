@@ -6,7 +6,7 @@ import errorhandling.NoConnectionException;
 import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import jokefetcher.NextLaunchFetcher;
+import nextLaunchFetcher.NextLaunchFetcher;
 
 public class NextLaunchFacade {
 

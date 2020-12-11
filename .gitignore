@@ -5,3 +5,4 @@ nb-configuration.xml
 
 /src/main/java/utils/SetupTestUsers.java
 /src/main/java/security/SharedSecret.java
+/nbproject/

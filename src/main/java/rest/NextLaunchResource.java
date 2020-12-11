@@ -36,6 +36,7 @@ public class NextLaunchResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonCount() throws NoConnectionException {
+
         long count = FACADE.getLaunchCount();
         return "{\"count\":" + count + "}";
     }
@@ -47,6 +48,4 @@ public class NextLaunchResource {
         NextLaunchDTO Nl = FACADE.getNextLaunch();
         return Response.ok(Nl.getData()).build();
     }
-        
-    
 }

@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,11 +40,13 @@ public class User implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
+    
+        
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private Comment comment;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
+//    private Comment comment;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Comment> commentList = new ArrayList<>();
@@ -68,9 +71,16 @@ public class User implements Serializable {
 
     public User(String userName, String userPass) {
         this.userName = userName;
-
+        
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
+    }  
+
+    public User(String userName) {
+        this.userName = userName;
     }
+    
+    
+    
 
     public String getUserName() {
         return userName;
@@ -108,13 +118,57 @@ public class User implements Serializable {
         this.commentList = commentList;
     }
 
-//    public void setComment(Comment comment){
-//    this.comment = comment;
-//    }
     public void addComment(Comment userComment) {
         if (userComment != null) {
             commentList.add(userComment);
             userComment.setUser(this);
         }
     }
+
+//    public Comment getComment() {
+//        return comment;
+//    }
+//
+//    public void setComment(Comment comment) {
+//        this.comment = comment;
+//    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.userName);
+        hash = 71 * hash + Objects.hashCode(this.userPass);
+        hash = 71 * hash + Objects.hashCode(this.roleList);
+        hash = 71 * hash + Objects.hashCode(this.commentList);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        if (!Objects.equals(this.userPass, other.userPass)) {
+            return false;
+        }
+        if (!Objects.equals(this.roleList, other.roleList)) {
+            return false;
+        }
+        if (!Objects.equals(this.commentList, other.commentList)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

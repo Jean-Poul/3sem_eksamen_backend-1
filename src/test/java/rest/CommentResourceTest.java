@@ -2,6 +2,8 @@ package rest;
 
 import dto.CommentDTO;
 import entities.Comment;
+import entities.Role;
+import entities.User;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
@@ -71,14 +73,47 @@ public class CommentResourceTest {
         c1 = new Comment("c1 comment", "333");
         c2 = new Comment("c2 comment", "323");
         
+        User user = new User("user", "popcorn");
+        User admin = new User("admin", "popcorn");
+        User both = new User("user_admin", "popcorn");
+        
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+        
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+        both.addRole(userRole);
+        both.addRole(adminRole);
+        
+//        Comment c1 = new Comment("Comments!!", "222");
+//        Comment c2 = new Comment("More comments!!", "3333");
+//        Comment c3 = new Comment("Trice comments!!", "123456");
+        
+        user.addComment(c1);
+        user.addComment(c2);
+
+        
+        
         try {
             
-            em.getTransaction().begin();
+           /* em.getTransaction().begin();
             em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
-            em.persist(c1);
-            em.persist(c2);
+            em.persist(user);
             em.getTransaction().commit();
-            
+            */
+           em.getTransaction().begin();
+        em.createNamedQuery("Role.deleteAllRows").executeUpdate();
+        em.createNamedQuery("User.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
+        
+        
+        em.persist(userRole);
+        em.persist(adminRole);
+        em.persist(user);
+        em.persist(admin);
+        em.persist(both);
+        em.getTransaction().commit();
+        
             
         } finally {
             

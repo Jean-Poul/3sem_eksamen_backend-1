@@ -1,9 +1,9 @@
 package facades;
 
+import dto.UserDTO;
 import entities.Role;
 import utils.EMF_Creator;
 import entities.User;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,11 +11,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import security.errorhandling.AuthenticationException;
 
@@ -77,14 +75,13 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void testAFacadeMethod() {
+    public void testUserCount() {
         assertEquals(2, facade.getUserCount(), "Expects two rows in the database");
     }
 
     @Test
     public void testGetVeryfiedUser() throws AuthenticationException {
         String pass = u1.getUserPass();
-
         assertEquals(u1.getUserName(), "testmand1");
         assertEquals(u1.getUserPass(), pass);
         assertThat(u1.getUserName(), is(not("pollemand")));
@@ -92,7 +89,35 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void testGetRoleList() {
+    public void testUserRole() {
         assertEquals(u1.getRolesAsStrings().get(0), r1.getRoleName());
     }
+
+    @Test
+    public void testAddUser() throws Exception {
+        String userName = "ulla";
+        String pass = "muffe";
+
+        User ul = new User(userName, pass);
+        UserDTO u = new UserDTO(ul);
+
+        System.out.println(u);
+
+        facade.addUser(userName, pass);
+
+        //assertEquals(u, em.find(User.class, userName));
+        
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            em.find(User.class, userName);
+
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+    }
+
 }
