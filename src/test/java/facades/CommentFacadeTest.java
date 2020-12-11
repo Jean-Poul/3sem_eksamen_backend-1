@@ -1,9 +1,10 @@
-
 package facades;
 
 import dto.CommentDTO;
 import dto.CommentsDTO;
 import entities.Comment;
+import entities.User;
+import errorhandling.NoConnectionException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-//@Disabled
+@Disabled
 public class CommentFacadeTest {
     
     private static EntityManagerFactory emf;
@@ -48,18 +50,23 @@ public class CommentFacadeTest {
     public void setUp() {
         EntityManager em = emf.createEntityManager();
         
-        c1 = new Comment("c1 comment");
-        c2 = new Comment("c2 comment");
+        
+        c1 = new Comment("c1 comment", "123");
+        c2 = new Comment("c2 comment", "456");
+        
         
         try {
+            
             em.getTransaction().begin();
-            em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
+           em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
             em.persist(c1);
             em.persist(c2);
-
             em.getTransaction().commit();
+            
         } finally {
+            
             em.close();
+            
         }
         
     }
@@ -70,14 +77,14 @@ public class CommentFacadeTest {
     }
     
     @Test
-    public void testCommentCount() {
+    public void testCommentCount() throws NoConnectionException{
         
         assertEquals(2, facade.getCommentCount(), "Expects two rows in the database");     
     
     }
     
     @Test
-    public void testGetAllComments() {
+    public void testGetAllComments() throws NoConnectionException{
         
         CommentsDTO commentsDTO = facade.getAllComments();
         List<CommentDTO> list = commentsDTO.getAll();
@@ -90,9 +97,10 @@ public class CommentFacadeTest {
     }
     
     @Test
-    public void testGetCommentById() throws Exception {
+    public void testGetUserComment() throws Exception {
 
         CommentDTO commentDTO = facade.getUserComment(c1.getId());
+ 
         assertEquals("c1 comment", commentDTO.getUserComment());
 
     }
@@ -100,9 +108,19 @@ public class CommentFacadeTest {
     @Test
     public void testAddComment() throws Exception {
         
-        facade.addComment("Jeg poster comments for at teste");
-        assertEquals(3, facade.getCommentCount());
+        CommentDTO commentDTO = facade.addComment("Comment fra test", "rocketID", "userName");
+        assertEquals("Comment fra test", commentDTO.getUserComment());
         
+    }
+    
+    
+    @Test
+    public void testdeleteComment() throws Exception {
+        
+       CommentDTO commentDTO = facade.deleteComment(c1.getId());
+       assertThat(c1.getId(), is(not(commentDTO.getId())));
+       assertEquals(1, facade.getCommentCount());
+       
     }
 
     

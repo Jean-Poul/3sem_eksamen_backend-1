@@ -1,4 +1,3 @@
-
 package entities;
 
 import java.io.Serializable;
@@ -28,20 +27,26 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "user_comment", columnDefinition = "TEXT")
+    
+    @Column(name = "user_comment", columnDefinition = "VARCHAR(250)")
     private String comment;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date created;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastEdited; 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
-
-    public Comment(String comment) {
+    
+    private String rocketID;
+    
+    public Comment(String comment, String rocketID) {
         this.comment = comment;
         this.created = new Date();
         this.lastEdited = new Date();
+        this.rocketID = rocketID;
     }
     
     public Comment() {
@@ -86,5 +91,18 @@ public class Comment implements Serializable {
     public void setLastEdited(Date lastEdited) {
         this.lastEdited = lastEdited;
     }
-    
+
+    public String getRocketID() {
+        return rocketID;
+    }
+
+    public void setRocketID(String rocketID) {
+        this.rocketID = rocketID;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" + "id=" + id + ", comment=" + comment + ", created=" + created + ", lastEdited=" + lastEdited + ", user=" + user + ", rocketID=" + rocketID + '}';
+    }
+       
 }

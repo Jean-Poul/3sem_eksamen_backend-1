@@ -1,12 +1,12 @@
 package rest;
 
-import dto.CommentDTO;
-import entities.Comment;
+import dto.UserDTO;
+import entities.Role;
+import entities.User;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -14,11 +14,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +22,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-@Disabled
-public class CommentResourceTest {
-    
+//@Disabled
+public class UserResourceTest {
+
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
-    
-    private static Comment c1, c2;
-    
+
+    //private static FacadeExample facade;
+    private User u1, u2, u3;
+    private Role r1, r2;
+
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
@@ -63,116 +61,77 @@ public class CommentResourceTest {
         EMF_Creator.endREST_TestWithDB();
         httpServer.shutdownNow();
     }
-    
+
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-        
-        Comment c1 = new Comment("Comments!!", "222");
-        Comment c2 = new Comment("More comments!!", "3333");
-
-        
         try {
-            
             em.getTransaction().begin();
-            em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
-            em.persist(c1);
-            em.persist(c2);
-            em.getTransaction().commit();        
-            
+            em.createNamedQuery("User.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Role.deleteAllRows").executeUpdate();
+            r1 = new Role("user");
+            r2 = new Role("admin");
+            u1 = new User("testmand1", "storFedAgurk");
+            u2 = new User("testmand2", "lilleFedTomat");
+
+            u3 = new User("Ulla", "Muffe");
+
+            u1.addRole(r1);
+            u2.addRole(r2);
+
+            em.persist(u1);
+            em.persist(u2);
+
+            em.getTransaction().commit();
         } finally {
-            
             em.close();
-            
         }
-        
     }
-    
+
+    //@Disabled
     @Test
     public void testServerIsUp() {
-        
+
         System.out.println("Testing is server UP");
-        
-        given().when().get("/comments").then().statusCode(200);
+
+        given().when().get("/users").then().statusCode(200);
     }
-    
+
+    //@Disabled
     @Test
     public void testCount() throws Exception {
-        
+
         given()
                 .contentType("application/json")
-                .get("/comments/count").then()
+                .get("/users/all").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("count", equalTo(2));
+                .body(equalTo("["+2+"]"));
 
     }
-    
+
+    //@Disabled
     @Test
-    public void testGetAllComments() {
-        List<CommentDTO> commentsDTOs;
+    public void testGetRole() throws Exception {
 
-        commentsDTOs = given()
-                .contentType("application/json")
-                .when()
-                .get("/comments/all")
-                .then()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .extract().body().jsonPath().getList("all", CommentDTO.class);
-
-        CommentDTO c1DTO = new CommentDTO(c1);
-        CommentDTO c2DTO = new CommentDTO(c2);
-        
-        assertThat(commentsDTOs, containsInAnyOrder(c1DTO, c2DTO));
-        
-        assertThat(commentsDTOs, hasSize(2));
-    }
-
-    @Test
-    public void getUserComment() throws Exception {
-        
-        int expected = Math.toIntExact(c1.getId());
-        
         //If you want to match on string use the code below and set body to "userComment"
         //String expected = c1.getComment(); 
-        
         given()
-                .contentType("application/json")
                 .when()
-                .get("/comments/" + c1.getId())
-                .then()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .assertThat()
-                .body("id", equalTo(expected));
+                .get("users/" + "user")
+                .then().statusCode(403);
     }
 
-    @Test
-    public void testAddComment() throws Exception {
-        
-        given()
-                .contentType("application/json")
-                .body(new CommentDTO(c1))
-                .when()
-                .post("comments")
-                .then()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("userComment", equalTo("c1 comment"))
-                .body("id", notNullValue());
-        
-    }
-
-    @Test
-    public void deleteUserComment() throws Exception {
-        given()
-                .contentType("application/json")
-                .body(new CommentDTO(c1))
-                .when()
-                .delete("comments/" + c1.getId())
-                .then()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("userComment", equalTo("c1 comment"))
-                .body("id", notNullValue());
-    }
     
+    @Test
+    public void testAddUser() throws Exception {
+        given()
+                .contentType("application/json")
+                .body(new UserDTO(u3))
+                .when()
+                .post("/users/")
+                .then()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("userID", equalTo("Ulla"));
+    }
 }
-

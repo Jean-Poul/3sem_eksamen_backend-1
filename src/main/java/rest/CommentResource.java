@@ -13,6 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CommentDTO;
 import dto.CommentsDTO;
+import errorhandling.CommentException;
+import errorhandling.NoConnectionException;
+import errorhandling.NotFoundException;
 import facades.CommentFacade;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,25 +25,19 @@ import javax.ws.rs.POST;
 public class CommentResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    
-    @Context
-    SecurityContext securityContext;
-
     private static final CommentFacade FACADE = CommentFacade.getCommentFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getCommentsForAll() {
-        
         return "{\"msg\":\"Hello from the comment section\"}";
-        
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)
-    public String commentCount() {
+    public String commentCount() throws NoConnectionException{
 
         long count = FACADE.getCommentCount();
         return "{\"count\":" + count + "}";
@@ -50,7 +47,7 @@ public class CommentResource {
     @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllComments() {
+    public String getAllComments() throws NoConnectionException {
         CommentsDTO comment = FACADE.getAllComments();
         return GSON.toJson(comment);
     }
@@ -58,17 +55,15 @@ public class CommentResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getUSerComment(@PathParam("id") long id) throws Exception {
-        
-        return GSON.toJson(FACADE.getUserComment(id));
-        
+    public String getUSerComment(@PathParam("id") long id) throws CommentException {
+        return GSON.toJson(FACADE.getUserComment(id));    
     }
 
     @DELETE
     @Path("delete/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public String deleteUserComment(@PathParam("id") long id) throws Exception {
+    public String deleteUserComment(@PathParam("id") long id) throws CommentException {
         
         CommentDTO commentDelete = FACADE.deleteComment(id);
         return GSON.toJson(commentDelete);
@@ -78,10 +73,10 @@ public class CommentResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public String addComment(String comment) throws Exception {
+    public String addComment(String comment) throws CommentException, NotFoundException {
         
         CommentDTO c = GSON.fromJson(comment, CommentDTO.class);
-        CommentDTO commentAdded = FACADE.addComment(c.getUserComment());
+        CommentDTO commentAdded = FACADE.addComment(c.getUserComment(), c.getRocketID(), c.getUserName());
         return GSON.toJson(commentAdded);
         
     }

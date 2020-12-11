@@ -1,14 +1,18 @@
-
 package dto;
 
 import entities.Comment;
+import java.util.Date;
 import java.util.Objects;
 
-
 public class CommentDTO {
+
     private String userComment;
     private Comment comment;
+    private Date created;
     private long id;
+    private String rocketID;
+    
+    private String userName;
 
     public CommentDTO() {
     }
@@ -16,6 +20,9 @@ public class CommentDTO {
     public CommentDTO(Comment comment) {
         this.userComment = comment.getComment();
         this.id = comment.getId();
+        this.created = comment.getCreated();
+        this.rocketID = comment.getRocketID();
+        this.userName = comment.getUser().getUserName();
     }
 
     public String getUserComment() {
@@ -32,11 +39,39 @@ public class CommentDTO {
 
     public void setComment(Comment comment) {
         this.comment = comment;
-    }    
+    }
 
     public long getId() {
         return id;
-    }   
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public String getRocketID() {
+        return rocketID;
+    }
+
+    public void setRocketID(String rocketID) {
+        this.rocketID = rocketID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     @Override
     public int hashCode() {
@@ -70,6 +105,12 @@ public class CommentDTO {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" + "userComment=" + userComment + ", comment=" + comment + ", created=" + created + ", id=" + id + ", rocketID=" + rocketID + ", userName=" + userName + '}';
+    }
     
     
+
 }

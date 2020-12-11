@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.NextLaunchDTO;
+import errorhandling.NoConnectionException;
 import facades.NextLaunchFacade;
 import java.io.IOException;
 import javax.persistence.EntityManagerFactory;
@@ -16,10 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import utils.EMF_Creator;
 
 @Path("nextlaunch")
-public class NextLaunchResource {
-
-    @Context
-    private UriInfo context;    
+public class NextLaunchResource {  
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final NextLaunchFacade FACADE = NextLaunchFacade.getNextLaunchFacade(EMF);
@@ -34,7 +32,8 @@ public class NextLaunchResource {
     @Path("count")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonCount() {
+    public String getPersonCount() throws NoConnectionException {
+
         long count = FACADE.getLaunchCount();
         return "{\"count\":" + count + "}";
     }
@@ -42,10 +41,8 @@ public class NextLaunchResource {
     @Path("/upcoming")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getNextLaunches() throws IOException {
+    public Response getNextLaunches() throws IOException,NoConnectionException {
         NextLaunchDTO Nl = FACADE.getNextLaunch();
         return Response.ok(Nl.getData()).build();
     }
-        
-    
 }

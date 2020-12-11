@@ -1,14 +1,19 @@
-
 package facades;
 
 import dto.CommentDTO;
 import dto.CommentsDTO;
+import dto.UserDTO;
 import entities.Comment;
+import errorhandling.CommentException;
+import errorhandling.NoConnectionException;
+import entities.User;
+import errorhandling.NotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
+import utils.EMF_Creator;
 
 public class CommentFacade {
+
     private static EntityManagerFactory emf;
     private static CommentFacade instance;
 
@@ -27,40 +32,44 @@ public class CommentFacade {
         }
         return instance;
     }
-    
+
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    public long getCommentCount(){
-        
+
+    public long getCommentCount() throws NoConnectionException {
         EntityManager em = emf.createEntityManager();
-        
-        try{
-            long commentCount = (long)em.createQuery("SELECT COUNT(c) FROM Comment c").getSingleResult();
-            return commentCount;
-        }finally{  
-            em.close();
-        }
-    }
-    
-        public CommentsDTO getAllComments() {
-        EntityManager em = getEntityManager();
+
         try {
-            return new CommentsDTO(em.createNamedQuery("Comment.getAllRows").getResultList());
+            long commentCount = (long) em.createQuery("SELECT COUNT(c) FROM Comment c").getSingleResult();
+            return commentCount;
+        } catch (Exception e) {
+            throw new NoConnectionException("No connection to the database");
         } finally {
             em.close();
         }
-    }   
-    
-    public CommentDTO getUserComment(long id) throws Exception {
-        
+    }
+
+    public CommentsDTO getAllComments() throws NoConnectionException {
+
         EntityManager em = getEntityManager();
-        
+        try {
+            return new CommentsDTO(em.createNamedQuery("Comment.getAllRows").getResultList());
+        } catch (Exception e) {
+            throw new NoConnectionException("No connection to the database");
+        } finally {
+            em.close();
+        }
+    }
+
+    public CommentDTO getUserComment(long id) throws CommentException {
+
+        EntityManager em = getEntityManager();
+
         Comment comment = em.find(Comment.class, id);
-        
+
         if (comment == null) {
-            throw new Exception("No user comment linked with provided id was found");
+            throw new CommentException("No user comment linked with provided id was found");
         } else {
             try {
                 return new CommentDTO(comment);
@@ -69,12 +78,13 @@ public class CommentFacade {
             }
         }
     }
-    
-    public CommentDTO deleteComment(long id) throws Exception {
+
+    public CommentDTO deleteComment(long id) throws CommentException {
+
         EntityManager em = getEntityManager();
         Comment comment = em.find(Comment.class, id);
         if (comment == null) {
-            throw new Exception("Could not delete, Id was not found");
+            throw new CommentException("Could not delete, Id was not found");
         } else {
             try {
                 em.getTransaction().begin();
@@ -86,16 +96,24 @@ public class CommentFacade {
             return new CommentDTO(comment);
         }
     }
-    
-    public CommentDTO addComment(String addComment) throws Exception {
-        
+
+    public CommentDTO addComment(String addComment, String rocketID, String userName) throws CommentException, NotFoundException {
+
         EntityManager em = emf.createEntityManager();
-        Comment comment = new Comment(addComment);
+        Comment comment = new Comment(addComment, rocketID);
+
+        User u = em.find(User.class, userName);
+
+        if (u == null) {
+            throw new NotFoundException();
+        }        
         
-        if ((addComment.length() == 0 )) {
-            throw new Exception("Missing input");
+        u.addComment(comment);
+        
+        if ((addComment.length() == 0)) {
+            throw new CommentException("Missing input");
         }
-        
+
         try {
             em.getTransaction().begin();
             em.persist(comment);
@@ -103,9 +121,15 @@ public class CommentFacade {
         } finally {
             em.close();
         }
-        
+
         return new CommentDTO(comment);
+    }
+
+    public static void main(String[] args) throws Exception {
+        EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+        CommentFacade cf = getCommentFacade(EMF);
+        cf.addComment("test fra facade", "123", "Per");
 
     }
-    
+
 }
