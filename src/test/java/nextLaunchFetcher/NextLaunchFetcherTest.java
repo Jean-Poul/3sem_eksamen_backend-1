@@ -1,6 +1,8 @@
 package nextLaunchFetcher;
 
 import entities.NextLaunch;
+import entities.User;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.Test;
@@ -44,8 +46,17 @@ public class NextLaunchFetcherTest {
 
     @Test
     public void testGetNextLaunchJson() throws Exception {
-            instance = getNextLaunchFetcher(emf);
-            String dataString = instance.getNextLaunchJson();
-            assertTrue(dataString.length() > 100);
+        EntityManagerFactory e = EMF_Creator.createEntityManagerFactoryForTest();
+        EntityManager em = e.createEntityManager();            
+        String jsonString = "";            
+
+        try {
+            em.getTransaction().begin();
+            jsonString = (String) em.createQuery("SELECT d.data FROM NextLaunch d").getResultList().get(0);
+            System.out.println("HEJSA " + jsonString);
+        } finally {
+            em.close();
+        }            
+            assertTrue(jsonString.length() > 100);
     }
 }
