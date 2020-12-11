@@ -58,7 +58,7 @@ public class CommentResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getUSerComment(@PathParam("id") long id) throws Exception {
+    public String getUserComment(@PathParam("id") long id) throws Exception {
         
         return GSON.toJson(FACADE.getUserComment(id));
         

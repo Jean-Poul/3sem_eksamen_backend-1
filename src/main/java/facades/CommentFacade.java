@@ -37,8 +37,8 @@ public class CommentFacade {
 
     public long getCommentCount() {
 
-        EntityManager em = emf.createEntityManager();
-
+        //EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             long commentCount = (long) em.createQuery("SELECT COUNT(c) FROM Comment c").getSingleResult();
             return commentCount;
@@ -113,15 +113,15 @@ public class CommentFacade {
         }
 
         try {
-            
+
             em.getTransaction().begin();
             em.persist(comment);
             em.getTransaction().commit();
-            
+
         } finally {
-            
+
             em.close();
-            
+
         }
 
         return new CommentDTO(comment);

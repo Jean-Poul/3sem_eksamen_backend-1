@@ -45,6 +45,10 @@ public class CommentDTO {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public Date getCreated() {
         return created;
     }
@@ -68,12 +72,6 @@ public class CommentDTO {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    
-    
-    
-
-    
 
     @Override
     public int hashCode() {
@@ -107,5 +105,12 @@ public class CommentDTO {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" + "userComment=" + userComment + ", comment=" + comment + ", created=" + created + ", id=" + id + ", rocketID=" + rocketID + ", userName=" + userName + '}';
+    }
+    
+    
 
 }

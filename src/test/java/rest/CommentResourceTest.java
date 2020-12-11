@@ -2,8 +2,6 @@ package rest;
 
 import dto.CommentDTO;
 import entities.Comment;
-import entities.Role;
-import entities.User;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
@@ -28,7 +26,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-@Disabled
+//@Disabled
 public class CommentResourceTest {
     
     private static final int SERVER_PORT = 7777;
@@ -70,50 +68,17 @@ public class CommentResourceTest {
     public void setUp() {
         EntityManager em = emf.createEntityManager();
         
-        c1 = new Comment("c1 comment", "333");
-        c2 = new Comment("c2 comment", "323");
-        
-        User user = new User("user", "popcorn");
-        User admin = new User("admin", "popcorn");
-        User both = new User("user_admin", "popcorn");
-        
-        Role userRole = new Role("user");
-        Role adminRole = new Role("admin");
-        
-        user.addRole(userRole);
-        admin.addRole(adminRole);
-        both.addRole(userRole);
-        both.addRole(adminRole);
-        
-//        Comment c1 = new Comment("Comments!!", "222");
-//        Comment c2 = new Comment("More comments!!", "3333");
-//        Comment c3 = new Comment("Trice comments!!", "123456");
-        
-        user.addComment(c1);
-        user.addComment(c2);
+        Comment c1 = new Comment("Comments!!", "222");
+        Comment c2 = new Comment("More comments!!", "3333");
 
-        
         
         try {
             
-           /* em.getTransaction().begin();
+            em.getTransaction().begin();
             em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
-            em.persist(user);
-            em.getTransaction().commit();
-            */
-           em.getTransaction().begin();
-        em.createNamedQuery("Role.deleteAllRows").executeUpdate();
-        em.createNamedQuery("User.deleteAllRows").executeUpdate();
-        em.createNamedQuery("Comment.deleteAllRows").executeUpdate();
-        
-        
-        em.persist(userRole);
-        em.persist(adminRole);
-        em.persist(user);
-        em.persist(admin);
-        em.persist(both);
-        em.getTransaction().commit();
-        
+            em.persist(c1);
+            em.persist(c2);
+            em.getTransaction().commit();        
             
         } finally {
             
@@ -162,9 +127,9 @@ public class CommentResourceTest {
         
         assertThat(commentsDTOs, hasSize(2));
     }
-    
+
     @Test
-    public void testGetComment() throws Exception {
+    public void getUserComment() throws Exception {
         
         int expected = Math.toIntExact(c1.getId());
         
@@ -180,7 +145,7 @@ public class CommentResourceTest {
                 .assertThat()
                 .body("id", equalTo(expected));
     }
-    
+
     @Test
     public void testAddComment() throws Exception {
         
@@ -195,7 +160,19 @@ public class CommentResourceTest {
                 .body("id", notNullValue());
         
     }
-    
+
+    @Test
+    public void deleteUserComment() throws Exception {
+        given()
+                .contentType("application/json")
+                .body(new CommentDTO(c1))
+                .when()
+                .delete("comments/" + c1.getId())
+                .then()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("userComment", equalTo("c1 comment"))
+                .body("id", notNullValue());
+    }
     
 }
 

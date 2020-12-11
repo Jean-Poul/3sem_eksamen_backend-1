@@ -104,7 +104,5 @@ public class Comment implements Serializable {
     public String toString() {
         return "Comment{" + "id=" + id + ", comment=" + comment + ", created=" + created + ", lastEdited=" + lastEdited + ", user=" + user + ", rocketID=" + rocketID + '}';
     }
-
-   
        
 }

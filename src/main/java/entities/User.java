@@ -41,7 +41,7 @@ public class User implements Serializable {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
     
         
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Role> roleList = new ArrayList<>();
 
 //    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
@@ -123,12 +123,4 @@ public class User implements Serializable {
             userComment.setUser(this);
         }
     }
-
-//    public Comment getComment() {
-//        return comment;
-//    }
-//
-//    public void setComment(Comment comment) {
-//        this.comment = comment;
-//    }
 }
