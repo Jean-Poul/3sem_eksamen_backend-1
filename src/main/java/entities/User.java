@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -117,5 +118,50 @@ public class User implements Serializable {
             commentList.add(userComment);
             userComment.setUser(this);
         }
+    }
+
+//    public Comment getComment() {
+//        return comment;
+//    }
+//
+//    public void setComment(Comment comment) {
+//        this.comment = comment;
+//    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.userName);
+        hash = 71 * hash + Objects.hashCode(this.userPass);
+        hash = 71 * hash + Objects.hashCode(this.roleList);
+        hash = 71 * hash + Objects.hashCode(this.commentList);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        if (!Objects.equals(this.userPass, other.userPass)) {
+            return false;
+        }
+        if (!Objects.equals(this.roleList, other.roleList)) {
+            return false;
+        }
+        if (!Objects.equals(this.commentList, other.commentList)) {
+            return false;
+        }
+        return true;
     }
 }

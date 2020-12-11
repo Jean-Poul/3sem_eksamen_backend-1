@@ -1,6 +1,6 @@
 # 3 Semester Examination
 
-(Insert travis URL)
+[![Build Status](https://travis-ci.com/MivleDK/3sem_eksamen_backend.svg?branch=main)](https://travis-ci.com/MivleDK/3sem_eksamen_backend)
 
 <br>
 

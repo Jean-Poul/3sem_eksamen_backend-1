@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-@Disabled
+//@Disabled
 public class LoginEndpointTest {
 
     private static final int SERVER_PORT = 7777;
@@ -109,22 +109,26 @@ public class LoginEndpointTest {
     private void logOut() {
         securityToken = null;
     }
-
+    
+    
+    //@Disabled
     @Test
     public void serverIsRunning() {
-        given().when().get("/info").then().statusCode(200);
+        given().when().get("/users").then().statusCode(200);
     }
-
+    
+    //@Disabled
     @Test
     public void testRestNoAuthenticationRequired() {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/").then()
+                .get("/users/").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello anonymous"));
     }
 
+    //@Disabled
     @Test
     public void testRestForAdmin() {
         login("admin", "popcorn");
@@ -133,11 +137,12 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/users/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: admin"));
     }
 
+    //@Disabled
     @Test
     public void testRestForUser() {
         login("user", "popcorn");
@@ -145,11 +150,12 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/users/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user"));
     }
 
+    //@Disabled
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
         login("user", "popcorn");
@@ -157,10 +163,11 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then() //Call Admin endpoint as user
+                .get("/users/admin").then() //Call Admin endpoint as user
                 .statusCode(401);
     }
 
+    //@Disabled
     @Test
     public void testAutorizedAdminCannotAccesUserPage() {
         login("admin", "popcorn");
@@ -168,10 +175,11 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call User endpoint as Admin
+                .get("/users/user").then() //Call User endpoint as Admin
                 .statusCode(401);
     }
 
+    //@Disabled
     @Test
     public void testRestForMultiRole1() {
         login("user_admin", "popcorn");
@@ -180,11 +188,12 @@ public class LoginEndpointTest {
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/users/admin").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to (admin) User: user_admin"));
     }
 
+    //@Disabled
     @Test
     public void testRestForMultiRole2() {
         login("user_admin", "popcorn");
@@ -192,30 +201,32 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/users/user").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user_admin"));
     }
 
+    //@Disabled
     @Test
     public void userNotAuthenticated() {
         logOut();
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/users/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
     }
 
+    //@Disabled
     @Test
     public void adminNotAuthenticated() {
         logOut();
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/users/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));

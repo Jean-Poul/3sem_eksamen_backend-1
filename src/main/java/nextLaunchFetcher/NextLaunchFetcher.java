@@ -1,4 +1,4 @@
-package jokefetcher;
+package nextLaunchFetcher;
 
 import entities.NextLaunch;
 import java.io.IOException;
@@ -18,6 +18,9 @@ public class NextLaunchFetcher {
 
     EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
     EntityManager em = emf.createEntityManager();
+
+    public NextLaunchFetcher() {
+    }
 
     public String getNextLaunchJson() throws IOException {
 
@@ -62,4 +65,3 @@ public class NextLaunchFetcher {
         }
     }
 }
-

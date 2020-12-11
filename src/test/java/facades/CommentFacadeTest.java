@@ -4,6 +4,7 @@ import dto.CommentDTO;
 import dto.CommentsDTO;
 import entities.Comment;
 import entities.User;
+import errorhandling.NoConnectionException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-//@Disabled
+@Disabled
 public class CommentFacadeTest {
     
     private static EntityManagerFactory emf;
@@ -76,14 +77,14 @@ public class CommentFacadeTest {
     }
     
     @Test
-    public void testCommentCount() {
+    public void testCommentCount() throws NoConnectionException{
         
         assertEquals(2, facade.getCommentCount(), "Expects two rows in the database");     
     
     }
     
     @Test
-    public void testGetAllComments() {
+    public void testGetAllComments() throws NoConnectionException{
         
         CommentsDTO commentsDTO = facade.getAllComments();
         List<CommentDTO> list = commentsDTO.getAll();
